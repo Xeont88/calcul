@@ -11,11 +11,13 @@ def set_text(num):
     global is_new_number
 
     temp = text_space.cget("text")
+
     if temp != '0' and not is_new_number:
         text_space.config(text=temp + num)
+        is_new_number = False
     else:
         text_space.config(text=num)
-        is_new_number = True
+        is_new_number = False
 
 
 def action(sign):
@@ -25,10 +27,21 @@ def action(sign):
 
     if sign != '=':
         a = text_space.cget('text')
+        set_text(a)
+        # set_text('')
         last_action = sign
-        is_new_number = False
+        is_new_number = True
+        if sign == "+":
+            text_space.config(text=int(a) + int(text_space.cget('text')))
+        if sign == "-":
+            text_space.config(text=int(a) - int(text_space.cget('text')))
+        if sign == "/":
+            text_space.config(text=int(a) / int(text_space.cget('text')))
+        if sign == "*":
+            text_space.config(text=int(a) * int(text_space.cget('text')))
+
     else:
-        text_space.config(text=int(a) + int(text_space.cget('text')))
+        print('something went wrong')
 
 
 root = Tk()
@@ -58,7 +71,8 @@ BS_btn = ttk.Button(btn_frame, text='BS')
 BS_btn.place(relx=0.5, rely=0.0,
              relwidth=0.25, relheight=0.2)
 
-div_btn = ttk.Button(btn_frame, text='/')
+div_btn = ttk.Button(btn_frame, text='/', style='my.TButton',
+                     command=lambda: action('/'))
 div_btn.place(relx=0.75, rely=0.0,
               relwidth=0.25, relheight=0.2)
 
@@ -77,7 +91,8 @@ n9_btn = ttk.Button(btn_frame, text='9', style='my.TButton',
 n9_btn.place(relx=0.5, rely=0.2,
              relwidth=0.25, relheight=0.2)
 
-mul_btn = ttk.Button(btn_frame, text='*')
+mul_btn = ttk.Button(btn_frame, text='*', style='my.TButton',
+                     command=lambda: action('*'))
 mul_btn.place(relx=0.75, rely=0.2,
               relwidth=0.25, relheight=0.2)
 
@@ -100,8 +115,6 @@ plus_btn = ttk.Button(btn_frame, text='+', style='my.TButton',
                       command=lambda: action('+'))
 plus_btn.place(relx=0.75, rely=0.4,
                relwidth=0.25, relheight=0.2)
-
-
 
 equal_btn = ttk.Button(btn_frame, text='=', style='my.TButton',
                        command=lambda: action('='))
