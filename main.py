@@ -15,7 +15,7 @@ def set_text(num):
         text_space.config(text=temp + num)
     else:
         text_space.config(text=num)
-        is_new_number = True
+        is_new_number = False
 
 
 def action(sign):
@@ -26,9 +26,35 @@ def action(sign):
     if sign != '=':
         a = text_space.cget('text')
         last_action = sign
-        is_new_number = False
+        is_new_number = True
     else:
-        text_space.config(text=int(a) + int(text_space.cget('text')))
+        if last_action == "+":
+            text_space.config(text=str(float(a) + float(text_space.cget('text'))))
+        if last_action == "-":
+            text_space.config(text=str(float(a) - float(text_space.cget('text'))))
+        if last_action == "*":
+            text_space.config(text=str(float(a) * float(text_space.cget('text'))))
+        if last_action == "/":
+            text_space.config(text=str(float(a) / float(text_space.cget('text'))))
+
+
+def minus_sign_func():
+    n = text_space.cget('text')
+    n = -float(n)
+    text_space.config(text=n)
+
+
+def backspace():
+    n = text_space.cget('text')
+    if len(n) > 1:
+        n = n[:-1]
+    else:
+        n = '0'
+    text_space.config(text=n)
+
+
+def clear():
+    text_space.config(text='0')
 
 
 root = Tk()
@@ -46,19 +72,20 @@ btn_frame = ttk.Frame(relief=GROOVE, )
 btn_frame.place(relx=0, rely=0.2,
                 relwidth=1, relheight=0.8)
 
-CE_btn = ttk.Button(btn_frame, text='CE')
+CE_btn = ttk.Button(btn_frame, text='CE', command=clear)
 CE_btn.place(relx=0, rely=0.0,
              relwidth=0.25, relheight=0.2)
 
-C_btn = ttk.Button(btn_frame, text='C')
+C_btn = ttk.Button(btn_frame, text='C', command=clear)
 C_btn.place(relx=0.25, rely=0.0,
             relwidth=0.25, relheight=0.2)
 
-BS_btn = ttk.Button(btn_frame, text='BS')
+BS_btn = ttk.Button(btn_frame, text='BS', command=backspace)
 BS_btn.place(relx=0.5, rely=0.0,
              relwidth=0.25, relheight=0.2)
 
-div_btn = ttk.Button(btn_frame, text='/')
+div_btn = ttk.Button(btn_frame, text='/', style='my.TButton',
+                     command=lambda: action('/'))
 div_btn.place(relx=0.75, rely=0.0,
               relwidth=0.25, relheight=0.2)
 
@@ -77,7 +104,8 @@ n9_btn = ttk.Button(btn_frame, text='9', style='my.TButton',
 n9_btn.place(relx=0.5, rely=0.2,
              relwidth=0.25, relheight=0.2)
 
-mul_btn = ttk.Button(btn_frame, text='*')
+mul_btn = ttk.Button(btn_frame, text='*', style='my.TButton',
+                     command=lambda: action('*'))
 mul_btn.place(relx=0.75, rely=0.2,
               relwidth=0.25, relheight=0.2)
 
@@ -101,11 +129,34 @@ plus_btn = ttk.Button(btn_frame, text='+', style='my.TButton',
 plus_btn.place(relx=0.75, rely=0.4,
                relwidth=0.25, relheight=0.2)
 
+n1_btn = ttk.Button(btn_frame, text='1', style='my.TButton',
+                    command=lambda: set_text('1'))
+n1_btn.place(relx=0.0, rely=0.6,
+             relwidth=0.25, relheight=0.2)
 
+n2_btn = ttk.Button(btn_frame, text='2', style='my.TButton',
+                    command=lambda: set_text('2'))
+n2_btn.place(relx=0.25, rely=0.6,
+             relwidth=0.25, relheight=0.2)
+
+n3_btn = ttk.Button(btn_frame, text='3', style='my.TButton',
+                    command=lambda: set_text('3'))
+n3_btn.place(relx=0.5, rely=0.6,
+             relwidth=0.25, relheight=0.2)
+
+equal_btn = ttk.Button(btn_frame, text='-', style='my.TButton',
+                       command=lambda: action('-'))
+equal_btn.place(relx=0.75, rely=0.6,
+                relwidth=0.25, relheight=0.2)
+
+equal_btn = ttk.Button(btn_frame, text='+/-', style='my.TButton',
+                       command=minus_sign_func)
+equal_btn.place(relx=0.0, rely=0.8,
+                relwidth=0.25, relheight=0.2)
 
 equal_btn = ttk.Button(btn_frame, text='=', style='my.TButton',
                        command=lambda: action('='))
-equal_btn.place(relx=0.75, rely=0.6,
+equal_btn.place(relx=0.75, rely=0.8,
                 relwidth=0.25, relheight=0.2)
 
 """
